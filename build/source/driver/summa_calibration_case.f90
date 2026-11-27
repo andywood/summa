@@ -508,7 +508,7 @@ contains
   ! **************************************************************************************************
   subroutine write_minimal_calibration_provenance(ncid_calib,config,err,message)
     USE mpi, only: MPI_Get_processor_name,MPI_MAX_PROCESSOR_NAME,MPI_SUCCESS
-    USE summaFileManager, only: SETTINGS_PATH,M_DECISIONS
+    USE summaFileManager, only: settings_file,M_DECISIONS
     USE netcdf, only: NF90_GLOBAL,NF90_NOERR,NF90_REDEF,NF90_PUT_ATT,NF90_ENDDEF,NF90_STRERROR
     implicit none
 
@@ -537,7 +537,7 @@ contains
 
     ! Same resolved path components used to open the SUMMA decisions file.
     nc_err=nf90_put_att(ncid_calib,NF90_GLOBAL,'model_decisions_file', &
-                       trim(SETTINGS_PATH)//trim(M_DECISIONS))
+                       settings_file(M_DECISIONS))
     if(nc_err/=NF90_NOERR) goto 900
 
     nc_err=nf90_put_att(ncid_calib,NF90_GLOBAL,'compute_hostname',hostname(:hostname_length))

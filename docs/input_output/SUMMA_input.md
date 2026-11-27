@@ -36,10 +36,10 @@ The following items must be provided in the master configuration file. Order is 
 - `simStartTime` : Start of the simulation specified as `'YYYY-MM-DD hh:mm'`. See [Time definition notes](#simulStartEndTimes).
 - `simEndTime` : End of the simulation specified as `'YYYY-MM-DD hh:mm'`.
 - `tmZoneInfo` : [Time zone information](#tmZoneInfo).
-- `settingsPath` : Base path for the configuration files. Most of the file paths in the remainder of the master configuration file are relative to this path (except `forcingPath` and `outputPath`).
+- `settingsPath` : Base path for the configuration files. Most of the file paths in the remainder of the master configuration file are relative to this path (except `forcingPath` and `outputPath`). A file name that starts with `/` is an absolute path and is used as written, so individual files can live outside `settingsPath`; any other name, including one in a subfolder such as `params/modelDecisions.txt`, is relative to `settingsPath`.
 - `forcingPath` : Base path for the meteorological forcing files specified in the `forcingList`.
 - `outputPath` : Base path for the SUMMA output files.
-- `statePath` : (optional) Base path for the SUMMA state files, including the initial condition file. If not given, the initial condition (state) file is read from the settingsPath directory, and the state file outputs are written to the outputPath directory. If given, summa expects the initial condition file to be in the state file directory.
+- `statePath` : (optional) Base path for the SUMMA state files, including the initial condition file. If not given, the initial condition (state) file is read from the settingsPath directory, and the state file outputs are written to the outputPath directory. If given, summa reads the initial condition file from the state file directory if it is there, and otherwise from `settingsPath`, so a cold-start file can stay with the settings while restart files are written to `statePath`. An absolute `initConditionFile` path is used as written.
 - `decisionsFile` : File path for the [model decisions file](#infile_model_decisions) (relative to `settingsPath`).
 - `outputControlFile` : File path for the [output control file](#infile_output_control) (relative to `settingsPath`).
 - `attributeFile` : File path for the [local attributes file](#infile_local_attributes) (relative to `settingsPath`).

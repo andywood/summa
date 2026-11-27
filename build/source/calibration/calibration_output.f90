@@ -616,7 +616,7 @@ contains
   subroutine write_failed_trial(config,sample_id,worker_rank,param_names,param_values, &
                                 error_message,dir,allow_serial_rerun,err,message)
     USE summa_type,       only: config_info
-    USE summaFileManager, only: OUTPUT_PATH,STATE_PATH,SETTINGS_PATH,MODEL_INITCOND
+    USE summaFileManager, only: OUTPUT_PATH,initcond_file
     implicit none
     ! dummy
     type(config_info)            , intent(in)        :: config             ! SUMMA configuration
@@ -683,11 +683,7 @@ contains
     endif
 
     ! the spun-up state the trial started from, as SUMMA resolves it
-    if(STATE_PATH == '')then
-      init_state=trim(SETTINGS_PATH)//trim(MODEL_INITCOND)
-    else
-      init_state=trim(STATE_PATH)//trim(MODEL_INITCOND)
-    endif
+    init_state=initcond_file()
     call execute_command_line('cp "'//init_state//'" "'//dir//'initial_state.nc"')
 
     ! a manifest case is built from a template, so only a single configuration file can be rerun as it stands

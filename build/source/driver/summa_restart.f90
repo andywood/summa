@@ -61,9 +61,7 @@ contains
  USE globalData,only:iulog                                   ! i/o unit for logging messages
  USE globalData,only:isPrint                                 ! flag to enable informational screen/log output
  ! file paths
- USE summaFileManager,only:SETTINGS_PATH                     ! path to settings files (e.g., Noah vegetation tables)
- USE summaFileManager,only:STATE_PATH                        ! optional path to state/init. condition files (defaults to SETTINGS_PATH)
- USE summaFileManager,only:MODEL_INITCOND                    ! name of model initial conditions file (defaults to 'none')
+ USE summaFileManager,only:initcond_file                     ! path to the initial conditions file
  ! timing variables
  USE globalData,only:startRestart,endRestart                 ! date/time for the start and end of reading model restart files
  USE globalData,only:elapsedRestart                          ! elapsed time to read model restart files
@@ -138,11 +136,7 @@ contains
  ! *****************************************************************************
 
  ! define restart file path/name
- if(STATE_PATH == '') then
-   restartFile = trim(SETTINGS_PATH)//trim(MODEL_INITCOND)
- else
-   restartFile = trim(STATE_PATH)//trim(MODEL_INITCOND)
- endif
+ restartFile = initcond_file()
 
  ! read initial conditions
  call read_icond(restartFile,                   & ! intent(in):    name of initial conditions file

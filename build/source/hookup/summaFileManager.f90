@@ -155,4 +155,42 @@ subroutine summa_SetTimesDirsAndFiles(summaFileManagerIn,err,message)
 
 end subroutine summa_SetTimesDirsAndFiles
 
+! **************************************************************************************************
+! public function settings_file: path to an input file named in the file manager
+! **************************************************************************************************
+function settings_file(fileName) result(filePath)
+  ! Purpose: A name given as an absolute path (starting with '/') is used as written; any other
+  !          name, including one in a subfolder, is taken to be relative to SETTINGS_PATH.
+  implicit none
+  character(*),intent(in)              :: fileName              ! file name from the file manager
+  character(len=:),allocatable         :: filePath              ! path to the file
+  if(index(adjustl(fileName),'/')==1)then
+    filePath = trim(adjustl(fileName))
+  else
+    filePath = trim(SETTINGS_PATH)//trim(fileName)
+  end if
+end function settings_file
+
+! **************************************************************************************************
+! public function initcond_file: path to the initial conditions (restart) file to read
+! **************************************************************************************************
+function initcond_file() result(filePath)
+  ! Purpose: An absolute path is used as written. Without STATE_PATH the file is in SETTINGS_PATH.
+  !          With STATE_PATH it is read from there if it exists, otherwise from SETTINGS_PATH, so a
+  !          cold-start file can stay with the settings while restarts are written to STATE_PATH.
+  !          If it is in neither, the STATE_PATH name is returned so the read error names it.
+  implicit none
+  character(len=:),allocatable         :: filePath              ! path to the file
+  logical(lgt)                         :: fileExists            ! .true. if the file exists
+  if(index(adjustl(MODEL_INITCOND),'/')==1 .or. len_trim(STATE_PATH)==0)then
+    filePath = settings_file(MODEL_INITCOND)
+    return
+  end if
+  filePath = trim(STATE_PATH)//trim(MODEL_INITCOND)
+  inquire(file=filePath,exist=fileExists)
+  if(fileExists) return
+  inquire(file=settings_file(MODEL_INITCOND),exist=fileExists)
+  if(fileExists) filePath = settings_file(MODEL_INITCOND)
+end function initcond_file
+
 END MODULE summaFileManager

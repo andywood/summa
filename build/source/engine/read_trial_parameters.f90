@@ -54,7 +54,7 @@ contains
                                   idStruct,mparStruct,bparStruct,&
                                   trial_param_names,err,message)
  ! used to read trial model parameter values
- USE summaFileManager,only:SETTINGS_PATH             ! path for metadata files
+ USE summaFileManager,only:settings_file             ! path to a file named in the file manager
  USE summaFileManager,only:PARAMETER_TRIAL           ! file with parameter trial values
  USE get_ixname_module,only:get_ixParam,get_ixBpar   ! access function to find index of elements in structure
  USE globalData,only:index_map,gru_struc             ! mapping from global HRUs to the elements in the data structures
@@ -116,7 +116,7 @@ contains
  ! **********************************************************************************************
 
  ! build filename
- infile = trim(SETTINGS_PATH)//trim(PARAMETER_TRIAL)
+ infile = settings_file(PARAMETER_TRIAL)
 
  ! check whether the user-specified file exists and warn if it does not
  inquire(file=trim(infile),exist=fexist)

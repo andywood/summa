@@ -37,7 +37,7 @@ contains
  USE ascii_util_module,only:linewidth
  USE netcdf_util_module,only:nc_file_open    ! open netCDF file
  USE netcdf_util_module,only:netcdf_err      ! netcdf error handling function
- USE summaFileManager,only:SETTINGS_PATH     ! path for metadata files
+ USE summaFileManager,only:settings_file     ! path to a file named in the file manager
  USE summaFileManager,only:FORCING_PATH      ! path for forcing files
  USE summaFileManager,only:FORCING_FILELIST  ! list of model forcing files
  USE globalData,only:forcFileInfo,data_step  ! info on model forcing file
@@ -84,7 +84,7 @@ contains
  ! (1) read from the list of forcing files
  ! ------------------------------------------------------------------------------------------------------------------
  ! build filename for forcing-file list file
- infile = trim(SETTINGS_PATH)//trim(FORCING_FILELIST)
+ infile = settings_file(FORCING_FILELIST)
 
  ! open file
  call file_open(trim(infile),unt,err,cmessage)

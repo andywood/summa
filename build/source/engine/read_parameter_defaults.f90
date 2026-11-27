@@ -40,7 +40,7 @@ contains
  ! ************************************************************************************************
  subroutine read_parameter_defaults(filenm,isLocal,absEnergyFac,mpar_meta,parFallback,err,message)
  ! Read default parameter values and constraints from the specified text file.
- USE summaFileManager,only:SETTINGS_PATH   ! path for input parameter and other configuration files
+ USE summaFileManager,only:settings_file   ! path to a file named in the file manager
  USE ascii_util_module,only:file_open      ! open ascii file
  USE ascii_util_module,only:split_line     ! extract the list of variable names from the character string
  USE data_types,only:var_info              ! data type for metadata
@@ -78,7 +78,7 @@ contains
  ! (1) open files, etc.
  ! **********************************************************************************************
  ! build filename and update error message
- infile = trim(SETTINGS_PATH)//trim(filenm)
+ infile = settings_file(filenm)
  message=trim(message)//'file='//trim(infile)//' - '
  ! open file
  call file_open(trim(infile),unt,err,cmessage)

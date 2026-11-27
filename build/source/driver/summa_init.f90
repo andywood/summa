@@ -70,9 +70,8 @@ USE globalData,only:statIndx_meta                           ! child metadata for
 USE globalData,only:statBvar_meta                           ! child metadata for stats
 
 ! provide access to file paths
-USE summaFileManager,only:SETTINGS_PATH                     ! define path to settings files (e.g., parameters, soil and veg. tables)
-USE summaFileManager,only:STATE_PATH                        ! optional path to state/init. condition files (defaults to SETTINGS_PATH)
-USE summaFileManager,only:MODEL_INITCOND                    ! name of model initial conditions file
+USE summaFileManager,only:settings_file                     ! path to a file named in the file manager
+USE summaFileManager,only:initcond_file                     ! path to the initial conditions file
 USE summaFileManager,only:LOCAL_ATTRIBUTES                  ! name of model attributes files
 
 ! model decisions
@@ -234,7 +233,7 @@ contains
       ! No parallel decomposition is performed here.
   
       ! obtain the HRU and GRU dimensions in the LocalAttributes file
-      attrFile = trim(SETTINGS_PATH)//trim(LOCAL_ATTRIBUTES)
+      attrFile = settings_file(LOCAL_ATTRIBUTES)
       select case (iRunMode)
       
         case (iRunModeFull)
@@ -302,11 +301,7 @@ contains
       ! *** read the number of snow and soil layers
       ! *****************************************************************************
       ! set restart filename and read the number of snow and soil layers from the initial conditions (restart) file
-      if(STATE_PATH == '') then
-        restartFile = trim(SETTINGS_PATH)//trim(MODEL_INITCOND)
-      else
-        restartFile = trim(STATE_PATH)//trim(MODEL_INITCOND)
-      endif
+      restartFile = initcond_file()
       call read_icond_nlayers(trim(restartFile),nGRU_local,nDOM,indx_meta,err,cmessage)
       if(err/=0)then; message=trim(message)//trim(cmessage); return; endif
   
