@@ -177,6 +177,12 @@ covers the user-facing highlights.
 
 ### Minor changes
 - Updated SWE balance check in coupled_em for cases where all snow melts in one of the substeps
+- Fixed: a run ending at hour 24 (e.g. `simEndTime '2017-10-05 24:00'`) with end-of-run restarts
+  (`-r e`) never wrote its ending state. The end restart is now written on the last time step.
+- Settings files can live outside `settingsPath`: a file manager name that starts with `/` is used
+  as written. When `statePath` is set, the initial conditions file is read from there if present,
+  otherwise from `settingsPath`, so a cold-start file can stay with the settings while restarts
+  are written to `statePath`.
 
 ## Version 3.2.0
 ### Major changes
